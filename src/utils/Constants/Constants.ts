@@ -1,4 +1,4 @@
-import { Auto } from "../Interfaces/Interfaces";
+import { Auto, Factors, IinitialFormCreate } from "../Interfaces/Interfaces";
 
 export const mockData: Auto[] = [
     {
@@ -172,3 +172,20 @@ export const mockData: Auto[] = [
 
     // Agrega más autos según sea necesario
 ];
+
+export const mockFactors: Factors[] = [
+    { value: '', label: 'Seleccione una opción' },
+    { value: 'Reputación de la Marca', label: 'Reputación de la Marca' },
+    { value: 'Opciones de Financiamiento', label: 'Opciones de Financiamiento' },
+    { value: 'Desempeño al Manejarlo', label: 'Desempeño al Manejarlo' },
+    { value: 'Recomendaciones', label: 'Recomendaciones' },
+    { value: 'Otros', label: 'Otros' },
+]
+
+export const initialFormCreate: IinitialFormCreate = {
+    identificacion: '',
+    modelo: '2023',
+    factoresCompra: '',
+    calificacionPrueba: 1,
+    calificacionSatisfaccion: 1,
+}

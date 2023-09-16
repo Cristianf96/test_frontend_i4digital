@@ -9,6 +9,7 @@ const NuevoAuto: React.FC = () => {
         calificacionPrueba: 1,
         calificacionSatisfaccion: 1,
     });
+    const token = localStorage.getItem('token');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -22,6 +23,10 @@ const NuevoAuto: React.FC = () => {
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1799 }, (_, i) => (currentYear - i).toString());
+
+    if (!token) {
+        return null;
+    }
 
     return (
         <div className="nuevo-auto">

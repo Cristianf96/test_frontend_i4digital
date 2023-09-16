@@ -1,44 +1,73 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import './Login.scss';
-
-interface FormData {
-  username: string;
-  password: string;
-}
+import { FormData } from '../../../utils/Interfaces/Interfaces';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import Home from '../../Home';
 
 const Login: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({ username: '', password: '' });
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token');
+  const [formData, setFormData] = useState<FormData>({ email: '', password: '' });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Aquí puedes agregar la lógica para manejar el envío del formulario
+    const { email, password } = formData
+
+    if (email.trim() && password.trim()) {
+      try {
+        const options = {
+          method: 'POST',
+          url: `${import.meta.env.VITE_BASE_URL}/api/auth`,
+          data: { email: email.trim(), password: password.trim() }
+        };
+
+        const response = await axios.request(options).then(function (response) {
+          return response.data
+        }).catch(function (error) {
+          alert('Could not login successfully.');
+          console.error(error);
+        });
+
+        localStorage.setItem('token', response.token)
+        navigate('/test_frontend_i4digital/inicio')
+      } catch (error) {
+        console.error('Error al autenticar:', error)
+      }
+    }
   };
 
+  if (token) {
+    return <Home />;
+  }
+
   return (
-    <div className="login-form">
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="username"
-          placeholder="Nombre de Usuario"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Contraseña"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        <button type="submit">Iniciar Sesión</button>
-      </form>
+    <div className='login'>
+      <div className="login-form">
+        <h2>Iniciar Sesión</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Contraseña"
+            value={formData.password}
+            onChange={handleChange}
+          />
+          <button type="submit">Iniciar Sesión</button>
+        </form>
+      </div>
     </div>
   );
 }

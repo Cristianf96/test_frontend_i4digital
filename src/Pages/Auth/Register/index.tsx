@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import './Register.scss';
+import Home from '../../Home';
 
 interface FormData {
   email: string;
@@ -8,6 +9,7 @@ interface FormData {
 }
 
 const Register: React.FC = () => {
+  const token = localStorage.getItem('token');
   const [formData, setFormData] = useState<FormData>({ email: '', password: '', passwordConfirmation: '' });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +21,10 @@ const Register: React.FC = () => {
     e.preventDefault();
     // Aquí puedes agregar la lógica para manejar el envío del formulario
   };
+
+  if (token) {
+    return <Home />;
+  }
 
   return (
     <div className="register-form">

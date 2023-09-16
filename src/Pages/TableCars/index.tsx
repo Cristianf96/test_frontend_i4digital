@@ -6,6 +6,7 @@ import { mockData } from '../../utils/Constants/Constants';
 const TableCars: React.FC = () => {
     const [autos, setAutos] = useState<Auto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
         // Simula la obtención de datos de la base de datos
@@ -27,6 +28,10 @@ const TableCars: React.FC = () => {
         // Esto podría implicar la navegación a una vista de edición
         console.log(`Editando encuesta con ID: ${id}`);
     };
+
+    if (!token) {
+        return null;
+    }
 
     return (
         <div className="listar-autos">

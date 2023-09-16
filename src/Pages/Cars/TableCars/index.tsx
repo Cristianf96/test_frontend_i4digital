@@ -4,9 +4,12 @@ import { Auto } from '../../../utils/Interfaces/Interfaces';
 import Login from '../../Auth/Login';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import SearchFilesComponent from '../../../Components/Animations/Lists';
+import { Player } from '@lottiefiles/react-lottie-player';
+import emptyData from '../../../assets/Animations/JSONs/emptyData.json'
+import toast, { Toaster } from 'react-hot-toast';
 
 const fecthData = async () => {
-    console.log('Dentro de la consulta')
     const options = {
         method: 'GET',
         url: `${import.meta.env.VITE_BASE_URL}/api/car`,
@@ -32,12 +35,18 @@ const TableCars: React.FC = () => {
     const [autos, setAutos] = useState<Auto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const token = localStorage.getItem('token');
+    const [Loading, setLoading] = useState<boolean>(true)
+    const [empty, setEmpty] = useState(false)
 
     useEffect(() => {
         const getData = async () => {
             const response = await fecthData()
-            if (response.length > 0) return setAutos(response)
-            console.log('No hay data en la BD', response)
+            if (response.length > 0) {
+                setAutos(response)
+            } else {
+                setEmpty(true)
+            }
+            setLoading(false)
         }
         getData()
     }, []);
@@ -64,6 +73,10 @@ const TableCars: React.FC = () => {
         if (response?.data.deleted) {
             const resNewData = await fecthData()
             setAutos(resNewData)
+            toast.success('Elimiada.', {
+                duration: 4000,
+                position: 'top-center'
+            });
         }
     };
 
@@ -75,54 +88,73 @@ const TableCars: React.FC = () => {
         return <Login />;
     }
 
-    return (
-        <div className="listar-autos">
-            <h2>Listar Autos</h2>
-            <div className="pagination">
-                <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
-                    Anterior
-                </button>
-                <button disabled={endIndex >= autos.length} onClick={() => setCurrentPage(currentPage + 1)}>
-                    Siguiente
-                </button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Codigo del Cliente</th>
-                        <th>Identificación del Cliente</th>
-                        <th>Modelo del Automóvil</th>
-                        <th>Factores de Compra</th>
-                        <th>Calificación de Prueba</th>
-                        <th>Calificación de Satisfacción</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {autos.slice(startIndex, endIndex).map(auto => (
-                        <tr key={auto.id}>
-                            <td>{auto.id_customer}</td>
-                            <td>{auto.identification_customer}</td>
-                            <td>{auto.car_model}</td>
-                            <td>{auto.factors}</td>
-                            <td>{auto.test_drive_qualification}</td>
-                            <td>{auto.satisfaction_rating}</td>
-                            <td>
-                                <button className='delete' onClick={() => handleDelete(auto.id)}>Eliminar Encuesta</button>
-                                <button className='edit' onClick={() => handleEdit(auto.id)}>Editar Encuesta</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <div className="pagination">
-                <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
-                    Anterior
-                </button>
-                <button disabled={endIndex >= autos.length} onClick={() => setCurrentPage(currentPage + 1)}>
-                    Siguiente
-                </button>
-            </div>
+    return !Loading ? (
+        <>
+            <Toaster />
+            {empty || autos.length === 0 ? (
+                <>
+                    <Player
+                        autoplay
+                        loop
+                        src={emptyData}
+                        style={{ width: '600px' }}
+                    >
+                    </Player>
+                </>
+            ) : (
+                <div className="listar-encuestas">
+                    <h2>Listar Encuestas</h2>
+                    <div className="pagination">
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                            Anterior
+                        </button>
+                        <button disabled={endIndex >= autos.length} onClick={() => setCurrentPage(currentPage + 1)}>
+                            Siguiente
+                        </button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Codigo del Cliente</th>
+                                <th>Identificación del Cliente</th>
+                                <th>Modelo del Automóvil</th>
+                                <th>Factores de Compra</th>
+                                <th>Calificación de Prueba</th>
+                                <th>Calificación de Satisfacción</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {autos.slice(startIndex, endIndex).map(auto => (
+                                <tr key={auto.id}>
+                                    <td>{auto.id_customer}</td>
+                                    <td>{auto.identification_customer}</td>
+                                    <td>{auto.car_model}</td>
+                                    <td>{auto.factors}</td>
+                                    <td>{auto.test_drive_qualification}</td>
+                                    <td>{auto.satisfaction_rating}</td>
+                                    <td>
+                                        <button className='delete' onClick={() => handleDelete(auto.id)}>Eliminar Encuesta</button>
+                                        <button className='edit' onClick={() => handleEdit(auto.id)}>Editar Encuesta</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>
+                            Anterior
+                        </button>
+                        <button disabled={endIndex >= autos.length} onClick={() => setCurrentPage(currentPage + 1)}>
+                            Siguiente
+                        </button>
+                    </div>
+                </div>
+            )}
+        </>
+    ) : (
+        <div className="listar-encuestas-animation">
+            <SearchFilesComponent />
         </div>
     );
 }

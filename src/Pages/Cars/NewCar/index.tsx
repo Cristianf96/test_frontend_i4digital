@@ -5,6 +5,7 @@ import axios from 'axios';
 import { initialFormCreate, mockFactors } from '../../../utils/Constants/Constants';
 import Login from '../../Auth/Login';
 import { Factors } from '../../../utils/Interfaces/Interfaces';
+import toast, { Toaster } from 'react-hot-toast';
 
 const NuevoAuto: React.FC = () => {
     const [formData, setFormData] = useState(initialFormCreate);
@@ -46,6 +47,10 @@ const NuevoAuto: React.FC = () => {
 
                 if (response.created) {
                     setFormData(initialFormCreate)
+                    toast.success('Creada.', {
+                        duration: 4000,
+                        position: 'top-center'
+                    });
                 }
             } catch (error) {
                 console.error('Error al crear:', error)
@@ -61,76 +66,79 @@ const NuevoAuto: React.FC = () => {
     }
 
     return (
-        <div className="nuevo-auto">
-            <h2>Registrar Nuevo Auto</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Identificación del Cliente:</label>
-                    <input
-                        type="text"
-                        name="identificacion"
-                        value={formData.identificacion}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Año del Automóvil:</label>
-                    <select
-                        name="modelo"
-                        value={formData.modelo}
-                        onChange={handleChange}
-                        required
-                    >
-                        {years.map(year => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Factores de Compra:</label>
-                    <select
-                        name="factoresCompra"
-                        value={formData.factoresCompra}
-                        onChange={handleChange}
-                        required
-                    >
-                        {mockFactors.map((item: Factors) => (
-                            <option key={item.label} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Calificación de Prueba de Manejo (1-5):</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        name="calificacionPrueba"
-                        value={formData.calificacionPrueba}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Calificación de Satisfacción (1-5):</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        name="calificacionSatisfaccion"
-                        value={formData.calificacionSatisfaccion}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Registrar Auto</button>
-            </form>
-        </div>
+        <>
+            <Toaster />
+            <div className="nuevo-auto">
+                <h2>Registrar Nueva Encuesta</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Identificación del Cliente:</label>
+                        <input
+                            type="text"
+                            name="identificacion"
+                            value={formData.identificacion}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Año del Automóvil:</label>
+                        <select
+                            name="modelo"
+                            value={formData.modelo}
+                            onChange={handleChange}
+                            required
+                        >
+                            {years.map(year => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Factores de Compra:</label>
+                        <select
+                            name="factoresCompra"
+                            value={formData.factoresCompra}
+                            onChange={handleChange}
+                            required
+                        >
+                            {mockFactors.map((item: Factors) => (
+                                <option key={item.label} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Calificación de Prueba de Manejo (1-5):</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            name="calificacionPrueba"
+                            value={formData.calificacionPrueba}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Calificación de Satisfacción (1-5):</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            name="calificacionSatisfaccion"
+                            value={formData.calificacionSatisfaccion}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <button type="submit">Registrar Auto</button>
+                </form>
+            </div>
+        </>
     );
 }
 

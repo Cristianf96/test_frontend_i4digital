@@ -1,6 +1,7 @@
-.listar-autos {
+.listar-encuestas {
     max-width: 800px;
     margin: 0 auto;
+    margin-top: 80px;
 
     h2 {
         font-size: 1.8em;
@@ -35,6 +36,7 @@
                 font-size: 0.9em;
                 font-weight: bold;
             }
+
             button.delete {
                 margin-bottom: 5px;
                 padding: 5px 5px;
@@ -71,4 +73,10 @@
             }
         }
     }
+}
+
+.listar-encuestas-animation {
+    max-width: 800px;
+    margin: 0 auto;
+    margin-top: 150px;
 }

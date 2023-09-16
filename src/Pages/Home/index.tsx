@@ -1,5 +1,8 @@
 import React from 'react';
 import Login from '../Auth/Login';
+import './Home.scss'
+import { Player } from '@lottiefiles/react-lottie-player';
+import welcomeAnimation from '../../assets/Animations/JSONs/welcomeAnimation.json'
 
 const Home: React.FC = () => {
 
@@ -10,10 +13,18 @@ const Home: React.FC = () => {
     }
 
     return (
-        <div>
-            <h2>Bienvenido a la Página de Home</h2>
-            <p>Esta es la página de Home de la aplicación.</p>
-        </div>
+        <>
+            <div className='home'>
+                <Player
+                    autoplay
+                    loop
+                    src={welcomeAnimation}
+                    style={{ width: '600px' }}
+                >
+                </Player>
+                <p>Esta es la página de Home de la aplicación.</p>
+            </div>
+        </>
     );
 }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Nav.scss';
-import Login from '../../Pages/Auth/Login';
 
 const Nav: React.FC = () => {
     const navigate = useNavigate()
@@ -13,7 +12,7 @@ const Nav: React.FC = () => {
     }
 
     if (!token) {
-        return <Login />;
+        return null;
     }
 
     return (
@@ -23,8 +22,8 @@ const Nav: React.FC = () => {
                     <li><Link to="/test_frontend_i4digital/inicio">Inicio</Link></li>
                 </div>
                 <div className='navigation'>
-                    <li><Link to="/test_frontend_i4digital/nuevo_auto">Nuevo Auto</Link></li>
-                    <li><Link to="/test_frontend_i4digital/listar_autos">Listar Autos</Link></li>
+                    <li><Link to="/test_frontend_i4digital/nueva_encuesta">Nueva Encuesta</Link></li>
+                    <li><Link to="/test_frontend_i4digital/listar_encuestas">Listar Encuestas</Link></li>
                     <li onClick={logout}>Cerrar Sesión</li>
                 </div>
             </ul>

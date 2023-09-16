@@ -78,8 +78,7 @@ const EditEncuesta: React.FC = () => {
                 });
 
                 if (response.updated) {
-                    console.log({ formData, options, response })
-                    navigate('/test_frontend_i4digital/listar_autos')
+                    navigate('/test_frontend_i4digital/listar_encuestas')
                 }
             } catch (error) {
                 console.error('Error al editar:', error)
@@ -95,76 +94,78 @@ const EditEncuesta: React.FC = () => {
     }
 
     return (
-        <div className="edit-encuesta">
-            <h2>Editar Encuesta</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Identificación del Cliente:</label>
-                    <input
-                        type="text"
-                        name="identification_customer"
-                        value={formData.identification_customer}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Año del Automóvil:</label>
-                    <select
-                        name="car_model"
-                        value={formData.car_model}
-                        onChange={handleChange}
-                        required
-                    >
-                        {years.map(year => (
-                            <option key={year} value={year}>
-                                {year}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Factores de Compra:</label>
-                    <select
-                        name="factors"
-                        value={formData.factors}
-                        onChange={handleChange}
-                        required
-                    >
-                        {mockFactors.map((item: Factors) => (
-                            <option key={item.label} value={item.value}>
-                                {item.label}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label>Calificación de Prueba de Manejo (1-5):</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        name="test_drive_qualification"
-                        value={formData.test_drive_qualification}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Calificación de Satisfacción (1-5):</label>
-                    <input
-                        type="number"
-                        min="1"
-                        max="5"
-                        name="satisfaction_rating"
-                        value={formData.satisfaction_rating}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <button type="submit">Editar Auto</button>
-            </form>
-        </div>
+        <>
+            <div className="edit-encuesta">
+                <h2>Editar Encuesta</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                        <label>Identificación del Cliente:</label>
+                        <input
+                            type="text"
+                            name="identification_customer"
+                            value={formData.identification_customer}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Año del Automóvil:</label>
+                        <select
+                            name="car_model"
+                            value={formData.car_model}
+                            onChange={handleChange}
+                            required
+                        >
+                            {years.map(year => (
+                                <option key={year} value={year}>
+                                    {year}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Factores de Compra:</label>
+                        <select
+                            name="factors"
+                            value={formData.factors}
+                            onChange={handleChange}
+                            required
+                        >
+                            {mockFactors.map((item: Factors) => (
+                                <option key={item.label} value={item.value}>
+                                    {item.label}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div>
+                        <label>Calificación de Prueba de Manejo (1-5):</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            name="test_drive_qualification"
+                            value={formData.test_drive_qualification}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label>Calificación de Satisfacción (1-5):</label>
+                        <input
+                            type="number"
+                            min="1"
+                            max="5"
+                            name="satisfaction_rating"
+                            value={formData.satisfaction_rating}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div>
+                    <button type="submit">Editar Auto</button>
+                </form>
+            </div>
+        </>
     );
 };
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TableCars.scss'
 import { Auto } from '../../utils/Interfaces/Interfaces';
 import { mockData } from '../../utils/Constants/Constants';
+import Login from '../Auth/Login';
 
 const TableCars: React.FC = () => {
     const [autos, setAutos] = useState<Auto[]>([]);
@@ -30,7 +31,7 @@ const TableCars: React.FC = () => {
     };
 
     if (!token) {
-        return null;
+        return <Login />;
     }
 
     return (

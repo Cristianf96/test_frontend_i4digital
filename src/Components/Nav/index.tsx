@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Nav.scss';
+import Login from '../../Pages/Auth/Login';
 
 const Nav: React.FC = () => {
     const navigate = useNavigate()
@@ -12,7 +13,7 @@ const Nav: React.FC = () => {
     }
 
     if (!token) {
-        return null;
+        return <Login />;
     }
 
     return (

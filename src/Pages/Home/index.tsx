@@ -1,11 +1,12 @@
 import React from 'react';
+import Login from '../Auth/Login';
 
 const Home: React.FC = () => {
 
     const token = localStorage.getItem('token');
 
     if (!token) {
-        return null;
+        return <Login />;
     }
 
     return (

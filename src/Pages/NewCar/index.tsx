@@ -1,14 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import './NewCar.scss';
+import Login from '../Auth/Login';
+import { Factors } from '../../utils/Interfaces/Interfaces';
+import { initialFormCreate, mockFactors } from '../../utils/Constants/Constants';
+import uniqid from 'uniqid';
+import axios from 'axios';
 
 const NuevoAuto: React.FC = () => {
-    const [formData, setFormData] = useState({
-        identificacion: '',
-        modelo: '2023',
-        factoresCompra: '',
-        calificacionPrueba: 1,
-        calificacionSatisfaccion: 1,
-    });
+    const [formData, setFormData] = useState(initialFormCreate);
     const token = localStorage.getItem('token');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -16,16 +15,47 @@ const NuevoAuto: React.FC = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(formData);
+        const { identificacion, modelo, factoresCompra, calificacionPrueba, calificacionSatisfaccion } = formData;
+        const idCustomer = uniqid()
+        if (identificacion.trim() && modelo.trim() && factoresCompra.trim()) {
+            try {
+                const options = {
+                    method: 'POST',
+                    url: `${import.meta.env.VITE_BASE_URL}/api/car/create`,
+                    data: {
+                        id_customer: idCustomer,
+                        identification_customer: identificacion.trim(),
+                        car_model: +modelo,
+                        factors: factoresCompra.trim(),
+                        test_drive_qualification: +calificacionPrueba,
+                        satisfaction_rating: +calificacionSatisfaccion
+                    },
+                    headers: {
+                        Authorization: `bearer ${token}`
+                    },
+                };
+
+                const response = await axios.request(options).then(function (response) {
+                    return response.data
+                }).catch(function (error) {
+                    alert('No se pudo crear.');
+                    console.error(error);
+                });
+                console.log({ formData, response });
+                setFormData(initialFormCreate)
+            } catch (error) {
+                console.error('Error al crear:', error)
+            }
+        }
     };
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1799 }, (_, i) => (currentYear - i).toString());
 
     if (!token) {
-        return null;
+        return <Login />;
     }
 
     return (
@@ -65,12 +95,11 @@ const NuevoAuto: React.FC = () => {
                         onChange={handleChange}
                         required
                     >
-                        <option value="">Seleccione una opción</option>
-                        <option value="Reputación de la Marca">Reputación de la Marca</option>
-                        <option value="Opciones de Financiamiento">Opciones de Financiamiento</option>
-                        <option value="Desempeño al Manejarlo">Desempeño al Manejarlo</option>
-                        <option value="Recomendaciones">Recomendaciones de Amigos o Familiares</option>
-                        <option value="Otros">Otros</option>
+                        {mockFactors.map((item: Factors) => (
+                            <option key={item.label} value={item.value}>
+                                {item.label}
+                            </option>
+                        ))}
                     </select>
                 </div>
                 <div>

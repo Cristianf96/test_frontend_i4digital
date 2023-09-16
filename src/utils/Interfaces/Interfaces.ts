@@ -25,3 +25,12 @@ export interface IinitialFormCreate {
     calificacionPrueba: number,
     calificacionSatisfaccion: number,
 }
+
+export interface IinitialFormEdit {
+    id_customer?: string,
+    identification_customer: string,
+    car_model: string,
+    factors: string,
+    test_drive_qualification: number,
+    satisfaction_rating: number,
+}

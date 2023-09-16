@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './TableCars.scss'
-import { Auto } from '../../utils/Interfaces/Interfaces';
-import Login from '../Auth/Login';
+import { Auto } from '../../../utils/Interfaces/Interfaces';
+import Login from '../../Auth/Login';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const fecthData = async () => {
+    console.log('Dentro de la consulta')
     const options = {
         method: 'GET',
         url: `${import.meta.env.VITE_BASE_URL}/api/car`,
@@ -26,6 +28,7 @@ const fecthData = async () => {
 }
 
 const TableCars: React.FC = () => {
+    const navigate = useNavigate()
     const [autos, setAutos] = useState<Auto[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const token = localStorage.getItem('token');
@@ -65,9 +68,7 @@ const TableCars: React.FC = () => {
     };
 
     const handleEdit = (id: number) => {
-        // Aquí puedes agregar la lógica para editar la encuesta con el ID proporcionado
-        // Esto podría implicar la navegación a una vista de edición
-        console.log(`Editando encuesta con ID: ${id}`);
+        navigate(`/test_frontend_i4digital/editar_encuesta/${id}`)
     };
 
     if (!token) {

@@ -1,10 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import './NewCar.scss';
-import Login from '../Auth/Login';
-import { Factors } from '../../utils/Interfaces/Interfaces';
-import { initialFormCreate, mockFactors } from '../../utils/Constants/Constants';
 import uniqid from 'uniqid';
 import axios from 'axios';
+import { initialFormCreate, mockFactors } from '../../../utils/Constants/Constants';
+import Login from '../../Auth/Login';
+import { Factors } from '../../../utils/Interfaces/Interfaces';
 
 const NuevoAuto: React.FC = () => {
     const [formData, setFormData] = useState(initialFormCreate);

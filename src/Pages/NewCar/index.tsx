@@ -43,8 +43,10 @@ const NuevoAuto: React.FC = () => {
                     alert('No se pudo crear.');
                     console.error(error);
                 });
-                console.log({ formData, response });
-                setFormData(initialFormCreate)
+
+                if (response.created) {
+                    setFormData(initialFormCreate)
+                }
             } catch (error) {
                 console.error('Error al crear:', error)
             }

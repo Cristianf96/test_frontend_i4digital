@@ -1,10 +1,11 @@
 export interface Auto {
     id: number;
-    identificacion: string;
-    modelo: string;
-    factoresCompra: string;
-    calificacionPrueba: number;
-    calificacionSatisfaccion: number;
+    id_customer: string;
+    identification_customer: string;
+    car_model: string;
+    factors: string;
+    test_drive_qualification: number;
+    satisfaction_rating: number;
 }
 
 export interface FormData {

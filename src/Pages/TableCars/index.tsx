@@ -1,8 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './TableCars.scss'
 import { Auto } from '../../utils/Interfaces/Interfaces';
-import { mockData } from '../../utils/Constants/Constants';
 import Login from '../Auth/Login';
+import axios from 'axios';
+
+const fecthData = async () => {
+    const options = {
+        method: 'GET',
+        url: `${import.meta.env.VITE_BASE_URL}/api/car`,
+        headers: {
+            Authorization: `bearer ${localStorage.getItem('token') ?? ""}`
+        },
+    };
+
+    const response = await axios.request(options).then(function (response) {
+        return { data: response.data, status: response.status }
+    }).catch(function (error) {
+        alert('No se pudo traer la informacion.');
+        console.error(error);
+    });
+
+    if (response?.status === 200) {
+        return response?.data
+    }
+}
 
 const TableCars: React.FC = () => {
     const [autos, setAutos] = useState<Auto[]>([]);
@@ -10,18 +31,37 @@ const TableCars: React.FC = () => {
     const token = localStorage.getItem('token');
 
     useEffect(() => {
-        // Simula la obtención de datos de la base de datos
-        setAutos(mockData);
+        const getData = async () => {
+            const response = await fecthData()
+            if (response.length > 0) return setAutos(response)
+            console.log('No hay data en la BD', response)
+        }
+        getData()
     }, []);
 
     const itemsPerPage = 10;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = Math.min(startIndex + itemsPerPage, autos.length);
 
-    const handleDelete = (id: number) => {
-        // Aquí puedes agregar la lógica para eliminar la encuesta con el ID proporcionado
-        // Esto podría implicar una llamada a la API o una manipulación de datos local
-        console.log(`Eliminando encuesta con ID: ${id}`);
+    const handleDelete = async (id: number) => {
+        const options = {
+            method: 'DELETE',
+            url: `${import.meta.env.VITE_BASE_URL}/api/car/delete/${id}`,
+            headers: {
+                Authorization: `bearer ${localStorage.getItem('token') ?? ""}`
+            },
+        };
+
+        const response = await axios.request(options).then(function (response) {
+            return { data: response.data, status: response.status }
+        }).catch(function (error) {
+            alert('No se pudo Eliminar.');
+            console.error(error);
+        });
+        if (response?.data.deleted) {
+            const resNewData = await fecthData()
+            setAutos(resNewData)
+        }
     };
 
     const handleEdit = (id: number) => {
@@ -48,6 +88,7 @@ const TableCars: React.FC = () => {
             <table>
                 <thead>
                     <tr>
+                        <th>Codigo del Cliente</th>
                         <th>Identificación del Cliente</th>
                         <th>Modelo del Automóvil</th>
                         <th>Factores de Compra</th>
@@ -59,11 +100,12 @@ const TableCars: React.FC = () => {
                 <tbody>
                     {autos.slice(startIndex, endIndex).map(auto => (
                         <tr key={auto.id}>
-                            <td>{auto.identificacion}</td>
-                            <td>{auto.modelo}</td>
-                            <td>{auto.factoresCompra}</td>
-                            <td>{auto.calificacionPrueba}</td>
-                            <td>{auto.calificacionSatisfaccion}</td>
+                            <td>{auto.id_customer}</td>
+                            <td>{auto.identification_customer}</td>
+                            <td>{auto.car_model}</td>
+                            <td>{auto.factors}</td>
+                            <td>{auto.test_drive_qualification}</td>
+                            <td>{auto.satisfaction_rating}</td>
                             <td>
                                 <button className='delete' onClick={() => handleDelete(auto.id)}>Eliminar Encuesta</button>
                                 <button className='edit' onClick={() => handleEdit(auto.id)}>Editar Encuesta</button>

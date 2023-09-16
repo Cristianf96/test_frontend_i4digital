@@ -6,3 +6,8 @@ export interface Auto {
     calificacionPrueba: number;
     calificacionSatisfaccion: number;
 }
+
+export interface FormData {
+    email: string;
+    password: string;
+}

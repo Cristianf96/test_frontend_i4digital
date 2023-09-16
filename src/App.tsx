@@ -5,8 +5,6 @@ import Nav from './Components/Nav'
 
 function App() {
 
-
-
   return (
     <div>
       <BrowserRouter>
@@ -17,7 +15,6 @@ function App() {
           <Route path="/test_frontend_i4digital/inicio" element={home} />
           <Route path="/test_frontend_i4digital/nuevo_auto" element={newCar} />
           <Route path="/test_frontend_i4digital/listar_autos" element={tableCars} />
-          {/* <Route path="/test_frontend_i4digital/cerrar_sesion" element={register} /> */}
           <Route path="/*" element={error404} />
         </Routes>
       </BrowserRouter >
